@@ -28,11 +28,9 @@ todos: [
 }
 
   render() {
-<<<<<<< HEAD
     // console.log("App.js: ", this.state.todos)
-=======
     console.log(this.state.todos)
->>>>>>> a1f008d5eb74bb8b0437b7cab0439741b580f6d6
+
     return (
       <div className="App">
      <Todos todos={this.state.todos}/>
