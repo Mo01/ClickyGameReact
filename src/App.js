@@ -27,12 +27,17 @@ class App extends Component {
 	};
 
 	clickCount = (id) => {
+		this.state.cards.forEach((card) => {
+			let cardEl = document.getElementById(card.id);
+			cardEl.classList.add('mo');
+		});
 		this.state.cards.find((o, i) => {
 			if (o.id === id) {
 				if (cards[i].count === 0) {
 					cards[i].count = cards[i].count + 1;
 					this.setState({ score: this.state.score + 1 }, function() {
-						console.log(this.state.score);
+						console.log(this.state.score, cards[i]);
+						let cardEl = document.getElementById(id);
 					});
 					this.state.cards.sort(() => Math.random() - 0.5);
 					return true;
@@ -45,6 +50,7 @@ class App extends Component {
 	};
 	// Map over this.state.cards and render a cardCard component for each card object
 	render() {
+		this.state.cards.sort(() => Math.random() - 0.5);
 		return (
 			<Wrapper>
 				<Header score={this.state.score} highscore={this.state.highscore}>
