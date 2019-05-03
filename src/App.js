@@ -1,87 +1,61 @@
-import React, { Component } from 'react';
-import './App.css';
-import Cards from './components/Cards'
+import React, { Component } from "react";
+import Card from "./components/Card";
+import Wrapper from "./components/Wrapper";
+import Header from "./components/Header";
+import cards from "./cards.json";
 
 class App extends Component {
-state = {
+  // Setting this.state.cards to the cards json array
+  state = {
+    cards,
+    score: 0,
+    highscore: 0
+  };
 
-Cards: [
-{
-  id: 1,
-  title: "./img/1.jpg",
-  complete: false
-},
-{
-  id: 2,
-  title: "./img/2.jpg",
-  complete: false
-},
-{
-  id: 3,
-  title: "./img/3.jpg",
-  complete: false
-},
-{
-  id: 4,
-  title: "./img/4.jpg",
-  complete: false
-},
-{
-  id: 5,
-  title: "./img/5.jpg",
-  complete: false
-},
-{
-  id: 6,
-  title: "./img/6.jpg",
-  complete: false
-},
-{
-  id: 7,
-  title: "./img/7.jpg",
-  complete: false
-},
-{
-  id: 8,
-  title: "./img/8.jpg",
-  complete: false
-},
-{
-  id: 9,
-  title: "./img/9.jpg",
-  complete: false
-},
-{
-  id: 10,
-  title: "./img/10.jpg",
-  complete: false
-},
-{
-  id: 11,
-  title: "./img/11.jpg",
-  complete: false
-},
-{
-  id: 12,
-  title: "./img/12.jpg",
-  complete: false
-}
+  gameOver = () => {
+    if (this.state.score > this.state.highscore) {
+      this.setState({highscore: this.state.score}, function() {
+        console.log(this.state.highscore);
+      });
+    }
+    this.state.cards.forEach(card => {
+      card.count = 0;
+    });
+    alert(`Good luck next time!!!!!!!!! \nscore: ${this.state.score}`);
+    this.setState({score: 0});
+    return true;
+  }
 
-
-
-]
-
-}
-
-
+  clickCount = id => {
+    this.state.cards.find((o, i) => {
+      if (o.id === id) {
+        if(cards[i].count === 0){
+          cards[i].count = cards[i].count + 1;
+          this.setState({score : this.state.score + 1}, function(){
+            console.log(this.state.score);
+          });
+          this.state.cards.sort(() => Math.random() - 0.5)
+          return true; 
+        } else {
+          this.gameOver();
+        }
+      }
+    });
+  }
+  // Map over this.state.cards and render a cardCard component for each card object
   render() {
-    // console.log("App.js: ", this.state.Cards)
-    // console.log(this.state.Cards)
-
     return (
-      <div className="App">
-     <Cards Cards={this.state.Cards} />
-      </div>
+      <Wrapper>
+        <Header score={this.state.score} highscore={this.state.highscore}>Clicky Game</Header>
+        {this.state.cards.map(card => (
+          <Card
+            clickCount={this.clickCount}
+            id={card.id}
+            key={card.id}
+            image={card.image}
+          />
+        ))}
+      </Wrapper>
     );
   }
 }
